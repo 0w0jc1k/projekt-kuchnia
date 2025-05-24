@@ -1,0 +1,23 @@
+package org.example;
+
+public class Order {
+    private Client client;
+    private Dish dish;
+    private int id;
+    private OrderStatus status;
+
+    public Order(Client client, Dish dish, int id) {
+        this.client = client;
+        this.dish = dish;
+        this.id = id;
+        this.status = OrderStatus.PENDING;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+}
