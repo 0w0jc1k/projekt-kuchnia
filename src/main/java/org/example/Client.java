@@ -58,5 +58,5 @@ public class Client extends Person {
     public void receiveDish() {
         // klient otrzymuje danie
     }
-
+//ostatnia zmiana
 }
