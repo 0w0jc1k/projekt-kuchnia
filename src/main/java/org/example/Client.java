@@ -12,7 +12,6 @@ public class Client extends Person {
     public Client(int id, String name) {
         super(id, name);
         this.waitTime = 30;
-        this.status = ClientStatus.WAITING; //poczatkowo oczekujacy
         this.satisfactionRating = 0; //poczatkowo nieocenione
         this.order = null;
     }
@@ -23,7 +22,7 @@ public class Client extends Person {
 
     public void placeOrder(Order order) {
         this.order = order;
-        this.status = ClientStatus.WAITING;
+        this.status = ClientStatus.WAITING; //poczatkowo oczekujacy
         // klient składa zamówienie
     }
 
