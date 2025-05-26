@@ -5,24 +5,16 @@ import java.util.List;
 
 public class Client extends Person {
     private int waitTime;
-    private List<Client> clients = new ArrayList<>();
     private int satisfactionRating;
     private ClientStatus status;
-    private List<Order> orders = new ArrayList<>();
+    private Order order;
 
     public Client(int id, String name) {
         super(id, name);
         this.waitTime = 30;
         this.status = ClientStatus.WAITING; //poczatkowo oczekujacy
         this.satisfactionRating = 0; //poczatkowo nieocenione
-    }
-
-    public void addClient(Client client) {
-        clients.add(client);
-    }
-
-    public void addOrder(Order order) {
-        orders.add(order);
+        this.order = null;
     }
 
     public int getWaitTime() {
@@ -30,6 +22,8 @@ public class Client extends Person {
     }
 
     public void placeOrder(Order order) {
+        this.order = order;
+        this.status = ClientStatus.WAITING;
         // klient składa zamówienie
     }
 
@@ -51,8 +45,8 @@ public class Client extends Person {
         return satisfactionRating;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public Order getOrder() {
+        return order;
     }
 
     public void receiveDish() {
