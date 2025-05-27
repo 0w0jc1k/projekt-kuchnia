@@ -16,27 +16,55 @@ public class Simulation {
         this.clients = new ArrayList<>();
     }
 
-    public void initialize(){
-        //inicjalizacja kucharzy
-        for(int i=0; i<config.getNumberOfCooks();i++){
-            kitchen.addCook(new Cook(i+1,"Cook"+i+1));
-        }
-        //inicjalizacja klientów
-        for(int i=0; i<config.getNumberOfClients();i++){
-            clients.add(new Client(i+1,"Client"+i+1));
-        }
+    public void initialize() {
+        // Dodajemy kucharza
+        kitchen.addCook(new Cook(1, "Maciej Musiał"));
+
+        // Dodajemy klienta
+        Client client = new Client(1, "Leonardo Di Caprio");
+        clients.add(client);
+
+        // Klient składa zamówienie
+        client.placeOrder(new Dish("Sushi", 5), kitchen);
     }
 
-    public void run(){
+    public void run() {
         //podstawowa implementacja przebiegu symulacji
         System.out.println("Simulation started");
 
-        //tutaj bedzie kod z petla glowna symulacji
+        for (currentTime = 0; currentTime < config.getSimulationDuration(); currentTime++) {
+            // Kuchnia przetwarza zamówienia
+            kitchen.processOrders();
+
+            // Dostarczanie gotowych zamówień
+            kitchen.deliverOrders();
+
+            // Aktualizacja statusu klienta
+            for (Client client : clients) {
+                client.updateStatus();
+
+                // Sprawdzenie czy symulacja powinna się zakończyć
+                if (client.getStatus() == ClientStatus.SERVED || client.getStatus() == ClientStatus.LEFT) {
+                    printSummary();
+                    return;
+                }
+            }
+        }
+        printSummary();
 
         System.out.println("Simulation completed");
     }
 
-    public void saveResults(){
-        saver.saveSimulationResults(clients, kitchen.getOrders());
+    private void printSummary() {
+        System.out.println("\n=== Podsumowanie ===");
+        Client client = clients.get(0);
+        System.out.println("Status klienta: " + client.getStatus());
+        System.out.println("Ocena satysfakcji: " + client.getSatisfactionRating());
     }
+
+
+    public void saveResults() {
+        //zapisuje do pliku
+    }
+
 }

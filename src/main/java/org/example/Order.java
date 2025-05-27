@@ -11,7 +11,6 @@ public class Order {
         this.dish = dish;
         this.id = id;
         this.status = OrderStatus.PENDING;
-        this.client.placeOrder(this); //przypisuje zamowienie do klienta
     }
 
     public Client getClient() {

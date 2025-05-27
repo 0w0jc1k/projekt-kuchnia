@@ -22,6 +22,7 @@ public class Client extends Person {
     public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie u kuchni
         this.order = new Order(this,dish,1);
         kitchen.addOrder(this.order);
+        System.out.println(getName() + " zamówił: " + dish.getName());
     }
 
     public void setStatus(ClientStatus status) {
@@ -46,8 +47,7 @@ public class Client extends Person {
         return order;
     }
 
-    public void receiveDish() {// klient otrzymuje danie
-        this.status = ClientStatus.SERVED;
+    public int satisfactionCalculation() {// klient otrzymuje danie i daje ocenke
         if(waitTime >=25 && waitTime <=30) { //ocena klienta w zaleznosci od czasu oczekiwania
             this.satisfactionRating = 5;
         }else if(waitTime <=25 && waitTime >=15) {
@@ -61,12 +61,21 @@ public class Client extends Person {
         }else{
             this.satisfactionRating = 0;
         }
+        return this.satisfactionRating;
     }
 
-    public void updateStatus() { //klient wychodzi jesli nie otrzymal zamowienia
-    this.waitTime--;
-    if(this.waitTime <= 0 && this.status != ClientStatus.SERVED) {
-        this.status = ClientStatus.LEFT;
+    public void updateStatus() { //update statusu klienta w zaleznosci od oczekiwania na zamowienie
+        if (status == ClientStatus.SERVED || status == ClientStatus.LEFT) {
+            return;
+        }
+        waitTime--;
+        if (waitTime <= 0) {
+            status = ClientStatus.LEFT;
+            satisfactionRating = 0;
+        } else if (order.getStatus() == OrderStatus.READY) {
+            status = ClientStatus.SERVED;
+            satisfactionRating = satisfactionCalculation();
+            System.out.println(getName() + " otrzymał zamówienie! Ocena: " + satisfactionRating);
         }
     }
 
