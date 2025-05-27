@@ -1,18 +1,18 @@
 package org.example;
 
 public class Cook extends Person {
-private boolean isAvailable;
+
 
     public Cook(int id, String name) {
         super(id, name);
-        this.isAvailable = true; //poczatkowo jest wolny
     }
 
-    public void prepareDish(Dish dish) {
-
+    public void prepareDish(Order order) { //kucharz przygotowuje danie
+   for(int i=0;i<=order.getDish().getPreparationTime();i++){ //symulacja czasu przygotowywania dania
+       System.out.print(i);
+   }
+   order.setStatus(OrderStatus.READY);
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
+
 }

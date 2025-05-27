@@ -15,18 +15,22 @@ public class Order {
     }
 
     public Client getClient() {
+
         return client;
     }
 
     public Dish getDish() {
+
         return dish;
     }
 
     public int getId() {
+
         return id;
     }
 
     public OrderStatus getStatus() {
+
         return status;
     }
 

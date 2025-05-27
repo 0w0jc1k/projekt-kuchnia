@@ -3,7 +3,7 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
 
-        Configuration config = new Configuration(5,30,30);
+        Configuration config = new Configuration(1,1,5);
 
         Simulation simulation = new Simulation(config);
         simulation.initialize(); //inicjalizuje liczbe klientow i kucharzy
