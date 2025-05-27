@@ -11,10 +11,10 @@ public class Order {
         this.dish = dish;
         this.id = id;
         this.status = OrderStatus.PENDING;
+        this.client.setOrder(this);
     }
 
     public Client getClient() {
-
         return client;
     }
 

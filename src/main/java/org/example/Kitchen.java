@@ -17,22 +17,31 @@ public class Kitchen {
     return orders;
     }
 
-    public void processOrders(){
-        for(Order order : orders){
+    public void processOrders() {
+        for (Order order : new ArrayList<>(orders)) {
             if (order.getStatus() == OrderStatus.PENDING) {
-                Cook cook = cooks.get(0); // Bierzemy pierwszego dostępnego kucharza
-                order.setStatus(OrderStatus.IN_PROGRESS);
-                cook.prepareDish(order);
-                return;
+                if (!cooks.isEmpty()) {
+                    Cook cook = cooks.get(0);
+                    order.setStatus(OrderStatus.IN_PROGRESS);
+                    cook.prepareDish(order);
+                }
+            }
+
+            // Anulowanie zamówienia jeśli klient wyszedł
+            if (order.getClient().getStatus() == ClientStatus.LEFT) {
+                order.setStatus(OrderStatus.CANCELLED);
+                orders.remove(order);
             }
         }
-        }
+    }
 
-        public void deliverOrders(){
+
+    public void deliverOrders(){
             for (Order order : new ArrayList<>(orders)) {
                 if (order.getStatus() == OrderStatus.READY) {
-                    System.out.println("Kuchnia dostarcza zamówienie do " + order.getClient().getName());
+                    System.out.println("Kuchnia dostarcza zamowienie do " + order.getClient().getName());
                     orders.remove(order);
+                    order.getClient().updateStatus();
                 }
             }
         }

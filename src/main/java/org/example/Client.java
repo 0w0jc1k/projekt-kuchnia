@@ -19,6 +19,10 @@ public class Client extends Person {
         return waitTime;
     }
 
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie u kuchni
         this.order = new Order(this,dish,1);
         kitchen.addOrder(this.order);
@@ -69,10 +73,17 @@ public class Client extends Person {
             return;
         }
         waitTime--;
-        if (waitTime <= 0) {
+        if(waitTime<= 15 && status == ClientStatus.WAITING) {
+            status = ClientStatus.IMPATIENT;
+            System.out.println("Klient: "+getName()+" sie niecierpliwi!");
+        }else if (waitTime <= 0) {
             status = ClientStatus.LEFT;
             satisfactionRating = 0;
-        } else if (order.getStatus() == OrderStatus.READY) {
+            if (order != null) {
+                order.setStatus(OrderStatus.CANCELLED);
+            }
+            System.out.println("Klient: "+getName()+" opuscil restauracje niezadowolony!");
+        } else if (order != null && order.getStatus() == OrderStatus.READY) {
             status = ClientStatus.SERVED;
             satisfactionRating = satisfactionCalculation();
             System.out.println(getName() + " otrzymał zamówienie! Ocena: " + satisfactionRating);
