@@ -51,8 +51,6 @@ public class Simulation {
             }
         }
         printSummary();
-
-        System.out.println("Simulation completed");
     }
 
     private void printSummary() {
@@ -60,6 +58,7 @@ public class Simulation {
         Client client = clients.get(0);
         System.out.println("Status klienta: " + client.getStatus());
         System.out.println("Ocena satysfakcji: " + client.getSatisfactionRating());
+        System.out.println("Simulation completed");
     }
 
 
