@@ -36,9 +36,6 @@ public class Simulation {
             // Kuchnia przetwarza zamówienia
             kitchen.processOrders();
 
-            // Dostarczanie gotowych zamówień
-            kitchen.deliverOrders();
-
             // Aktualizacja statusu klienta
             for (Client client : clients) {
                 client.updateStatus();
@@ -49,6 +46,8 @@ public class Simulation {
                     return;
                 }
             }
+            // Dostarczanie gotowych zamówień
+            kitchen.deliverOrders();
         }
         printSummary();
     }
