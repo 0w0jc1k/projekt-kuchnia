@@ -21,7 +21,7 @@ public class Simulation {
         kitchen.addCook(new Cook(1, "Maciej Musiał"));
 
         // Dodajemy klienta
-        Client client = new Client(1, "Leonardo Di Caprio");
+        Client client = new Client(1, "Pedro Pascal");
         clients.add(client);
 
         // Klient składa zamówienie wstepnie wybrane, finalnie bedzie losowal samodzielnie
