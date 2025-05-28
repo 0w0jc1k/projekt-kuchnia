@@ -28,7 +28,7 @@ public class Kitchen {
             }
 
             // Anulowanie zamówienia jeśli klient wyszedł
-            if (order.getClient().getStatus() == ClientStatus.LEFT) {
+            if (order.getClient()!= null && order.getClient().getStatus() == ClientStatus.LEFT) {
                 order.setStatus(OrderStatus.CANCELLED);
                 orders.remove(order);
             }

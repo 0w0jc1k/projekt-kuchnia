@@ -1,5 +1,4 @@
 package org.example;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +7,16 @@ public class Client extends Person {
     private int satisfactionRating;
     private ClientStatus status;
     private Order order;
+    private int actualWaitTime = 0;
 
-    public Client(int id, String name) { //konstruktor do tworzenia klientów
+    public Client(int id, String name) {
         super(id, name);
         this.waitTime = 30;
         this.status = ClientStatus.WAITING;
+    }
+
+    public int getActualWaitTime(){
+        return actualWaitTime;
     }
 
     public int getWaitTime() {
@@ -23,10 +27,10 @@ public class Client extends Person {
         this.order = order;
     }
 
-    public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie u kuchni
-        this.order = new Order(this,dish,1);
+    public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie w kuchni
+        this.order = new Order(this,dish,1); //przykladowe zamowienie
         kitchen.addOrder(this.order);
-        System.out.println(getName() + " zamówił: " + dish.getName());
+        System.out.println(getId()+". "+getName() + " zamówił: " + dish.getName());
     }
 
     public void setStatus(ClientStatus status) {
@@ -35,12 +39,6 @@ public class Client extends Person {
 
     public ClientStatus getStatus() {
         return status;
-    }
-
-    public void setSatisfactionRating(int rating) { //ustala stopien zadowolenia klienta
-        if (rating >= 1 && rating <= 5) {
-            this.satisfactionRating = rating;
-        }
     }
 
     public int getSatisfactionRating() {
@@ -72,7 +70,7 @@ public class Client extends Person {
         if (status == ClientStatus.SERVED || status == ClientStatus.LEFT) {
             return;
         }
-        waitTime--;
+        waitTime= 30 - order.getDish().getPreparationTime();
         if(waitTime<= 15 && status == ClientStatus.WAITING) {
             status = ClientStatus.IMPATIENT;
             System.out.println("Klient: "+getName()+" sie niecierpliwi!");
@@ -85,8 +83,9 @@ public class Client extends Person {
             System.out.println("Klient: "+getName()+" opuscil restauracje niezadowolony!");
         } else if (order != null && order.getStatus() == OrderStatus.READY) {
             status = ClientStatus.SERVED;
+            actualWaitTime = order.getDish().getPreparationTime();
             satisfactionRating = satisfactionCalculation();
-            System.out.println(getName() + " otrzymał zamówienie! Ocena: " + satisfactionRating);
+            System.out.println(getName() + " otrzymał zamówienie po "+actualWaitTime+" jednostkach czasu! Ocena: " + satisfactionRating);
         }
     }
 

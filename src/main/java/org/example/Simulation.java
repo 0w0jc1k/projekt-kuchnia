@@ -24,8 +24,8 @@ public class Simulation {
         Client client = new Client(1, "Leonardo Di Caprio");
         clients.add(client);
 
-        // Klient składa zamówienie
-        client.placeOrder(new Dish("Sushi", 5), kitchen);
+        // Klient składa zamówienie wstepnie wybrane, finalnie bedzie losowal samodzielnie
+        client.placeOrder(new Dish("Sushi", 15), kitchen);
     }
 
     public void run() {
@@ -58,6 +58,11 @@ public class Simulation {
         Client client = clients.get(0);
         System.out.println("Status klienta: " + client.getStatus());
         System.out.println("Ocena satysfakcji: " + client.getSatisfactionRating());
+        if(client.getActualWaitTime()<=0){
+            System.out.println("Czas oczekiwania: wstyd sie przyznac... (>30)");
+        }else {
+            System.out.println("Czas oczekiwania: " + client.getActualWaitTime() + " jednostek czasu");
+        }
         System.out.println("Simulation completed");
     }
 
