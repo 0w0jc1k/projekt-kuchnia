@@ -1,6 +1,6 @@
-<mxfile host="drawio-plugin" modified="2025-05-26T13:17:25.030Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="zKYPN3GJRnBED8ixkZvR" version="22.1.22" type="embed" pages="4">
+<mxfile host="drawio-plugin" modified="2025-05-28T08:41:20.995Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="uWh6FRVzyCMVz7nZKfJf" version="22.1.22" type="embed" pages="4">
   <diagram id="q1VcUU7NpbMo4AxhSSP8" name="Diagram klas">
-    <mxGraphModel dx="1383" dy="1866" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="1">
+    <mxGraphModel dx="733" dy="1636" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="1">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -308,7 +308,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="VHhy5yBDNTIt-8C6kZ5O" name="Diagram maszyny stanów">
-    <mxGraphModel dx="968" dy="536" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="733" dy="536" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -330,7 +330,7 @@
             <mxPoint x="470" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="6_5N6Byni7pK0880tE5t-8" value="czas&amp;gt;30 minut" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;curved=1;" parent="1" source="6_5N6Byni7pK0880tE5t-4" target="6_5N6Byni7pK0880tE5t-3" edge="1">
+        <mxCell id="6_5N6Byni7pK0880tE5t-8" value="czas&amp;gt;15 minut" style="endArrow=open;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;curved=1;" parent="1" source="6_5N6Byni7pK0880tE5t-4" target="6_5N6Byni7pK0880tE5t-3" edge="1">
           <mxGeometry x="0.6364" y="10" width="160" relative="1" as="geometry">
             <mxPoint x="310" y="280" as="sourcePoint" />
             <mxPoint x="470" y="280" as="targetPoint" />
