@@ -11,63 +11,93 @@ public class Simulation {
 
     public Simulation(Configuration config) {
         this.config = config;
-        this.kitchen = new Kitchen();
+        this.kitchen = new Kitchen(this);
         this.saver = new Saver();
         this.clients = new ArrayList<>();
     }
 
+    private static final List<String> random_clients_names = Arrays.asList( //lista z ktorej w randomowy sposob losowane beda dane klientow
+            "Pedro Pascal", "Chris Evans", "Johnny Depp", "Robert Downey Jr.", "Timothee Chalamet",
+            "Cate Blanchett", "Jennifer Lawrence", "Dakota Johnson", "Bradley Cooper", "Ryan Gosling"
+    );
+
+    private final static List<Dish> menu = Arrays.asList(
+            new Dish("Sushi", 15),
+            new Dish("Karpatka", 25),
+            new Dish("Pizza", 20),
+            new Dish("Burger", 17),
+            new Dish("Lasagne", 14),
+            new Dish("Zupa pomidorowa", 8),
+            new Dish("Pierogi", 10),
+            new Dish("Bruschetta", 4),
+            new Dish("Sałatka Cezar", 12),
+            new Dish("Makaron Carbonara", 35)
+    );
+
     public void initialize() {
-        // Dodajemy kucharza
-        kitchen.addCook(new Cook(1, "Maciej Musiał"));
+        for (int i = 1; i <= config.getNumberOfCooks(); i++) {
+            kitchen.addCook(new Cook(i, "Kucharz_" + i));
+        }
 
-        // Dodajemy klienta
-        Client client = new Client(1, "Pedro Pascal");
-        clients.add(client);
+        for (int i = 1; i <= config.getNumberOfClients(); i++) {
+            Random rand = new Random();
+            String randomClientName = random_clients_names.get(rand.nextInt(random_clients_names.size()));
+            Client client = new Client(i, randomClientName);
+            clients.add(client);
 
-        // Klient składa zamówienie wstepnie wybrane, finalnie bedzie losowal samodzielnie
-        client.placeOrder(new Dish("Sushi", 15), kitchen);
+            Dish chosenDish = menu.get(new Random().nextInt(menu.size()));
+            client.placeOrder(chosenDish, kitchen);
+        }
     }
 
     public void run() {
         //podstawowa implementacja przebiegu symulacji
+        System.out.println();
         System.out.println("Simulation started");
 
-        for (currentTime = 0; currentTime < config.getSimulationDuration(); currentTime++) {
-            // Kuchnia przetwarza zamówienia
+        boolean allServedOrLeft = false; //zmienna przechowujaca informacje, czy kazdy klient zostal obsluzony lub czy wyszedl
+        while (!allServedOrLeft) {
             kitchen.processOrders();
 
-            // Aktualizacja statusu klienta
-            for (Client client : clients) {
-                client.updateStatus();
 
-                // Sprawdzenie czy symulacja powinna się zakończyć
-                if (client.getStatus() == ClientStatus.SERVED || client.getStatus() == ClientStatus.LEFT) {
-                    printSummary();
-                    return;
+            for (Client client : new ArrayList<>(clients)) {
+                ClientStatus prevStatus = client.getStatus();
+                client.updateStatus(); //update jesli zmienil sie z pierwotnie przypisanego
+                if (client.getStatus() != prevStatus) {
+                    System.out.println("Status klienta " + client.getName() + " zmienil sie na: " + client.getStatus());
+                }
+                if (client.getStatus() == ClientStatus.LEFT) {
+                    printClientSummary(client);
+                    clients.remove(client);
                 }
             }
+
             // Dostarczanie gotowych zamówień
             kitchen.deliverOrders();
-        }
-        printSummary();
-    }
 
-    private void printSummary() {
-        System.out.println("\n=== Podsumowanie ===");
-        Client client = clients.get(0);
-        System.out.println("Status klienta: " + client.getStatus());
-        System.out.println("Ocena satysfakcji: " + client.getSatisfactionRating());
-        if(client.getActualWaitTime()<=0){
-            System.out.println("Czas oczekiwania: wstyd sie przyznac... (>30)");
-        }else {
-            System.out.println("Czas oczekiwania: " + client.getActualWaitTime() + " jednostek czasu");
+            allServedOrLeft = clients.isEmpty();
         }
         System.out.println("Simulation completed");
     }
 
+    public void printClientSummary(Client client) {
+        System.out.println("====Podsumowanie klienta====");
+        System.out.println("Klient: " + client.getName());
+        System.out.println("Status: " + client.getStatus());
+        System.out.println("Ocena satysfakcji: "+ client.getSatisfactionRating());
+        if(client.getActualWaitTime()<=0){
+            System.out.println("Czas oczekiwania: (>30) jednostek czasu");
+        }else{
+            System.out.println("Czas oczekiwania: " + client.getActualWaitTime()+" jednostek czasu");
+        }
+        System.out.println("==========================");
+    }
+
+    public void removeClient(Client client) {
+        clients.remove(client);
+    }
 
     public void saveResults() {
         //zapisuje do pliku
     }
-
 }

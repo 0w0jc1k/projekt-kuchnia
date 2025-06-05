@@ -1,6 +1,4 @@
 package org.example;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Client extends Person {
     private int waitTime;
@@ -15,38 +13,10 @@ public class Client extends Person {
         this.status = ClientStatus.WAITING;
     }
 
-    public int getActualWaitTime(){
-        return actualWaitTime;
-    }
-
-    public int getWaitTime() {
-        return waitTime;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
     public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie w kuchni
         this.order = new Order(this,dish,1); //przykladowe zamowienie
         kitchen.addOrder(this.order);
         System.out.println(getId()+". "+getName() + " zamówił: " + dish.getName());
-    }
-
-    public void setStatus(ClientStatus status) {
-        this.status = status;
-    }
-
-    public ClientStatus getStatus() {
-        return status;
-    }
-
-    public int getSatisfactionRating() {
-        return satisfactionRating;
-    }
-
-    public Order getOrder() {
-        return order;
     }
 
     public int satisfactionCalculation() {// klient otrzymuje danie i daje ocenke
@@ -85,8 +55,34 @@ public class Client extends Person {
             status = ClientStatus.SERVED;
             actualWaitTime = order.getDish().getPreparationTime();
             satisfactionRating = satisfactionCalculation();
-            System.out.println(getName() + " otrzymał zamówienie po "+actualWaitTime+" jednostkach czasu! Ocena: " + satisfactionRating);
         }
     }
 
+    public int getActualWaitTime(){
+        return actualWaitTime;
+    }
+
+    public int getWaitTime() {
+        return waitTime;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setStatus(ClientStatus status) {
+        this.status = status;
+    }
+
+    public ClientStatus getStatus() {
+        return status;
+    }
+
+    public int getSatisfactionRating() {
+        return satisfactionRating;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
 }
