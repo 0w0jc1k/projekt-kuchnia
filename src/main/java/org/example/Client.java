@@ -1,6 +1,6 @@
 package org.example;
 
-public class Client extends Person {
+public class Client extends Person implements ClientAction{
     private int waitTime;
     private int satisfactionRating;
     private ClientStatus status;
