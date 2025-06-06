@@ -14,6 +14,7 @@ public class Simulation {
         this.kitchen = new Kitchen(this);
         this.saver = new Saver();
         this.clients = new ArrayList<>();
+        this.currentTime = 0;
     }
 
     private static final List<String> random_clients_names = Arrays.asList( //lista z ktorej w randomowy sposob losowane beda dane klientow
@@ -48,6 +49,7 @@ public class Simulation {
             Dish chosenDish = menu.get(new Random().nextInt(menu.size()));
             client.placeOrder(chosenDish, kitchen);
         }
+        System.out.println("===================================");
     }
 
     public void run() {
@@ -55,29 +57,52 @@ public class Simulation {
         System.out.println();
         System.out.println("Simulation started");
 
-        boolean allServedOrLeft = false; //zmienna przechowujaca informacje, czy kazdy klient zostal obsluzony lub czy wyszedl
-        while (!allServedOrLeft) {
-            kitchen.processOrders();
+        List<Client> completedClients = new ArrayList<>();
 
+        while (currentTime < config.getSimulationDuration() && (!clients.isEmpty() || !kitchen.getOrders().isEmpty())) {
+            currentTime++;
+            System.out.println("Czas symulacji: " + currentTime);
 
-            for (Client client : new ArrayList<>(clients)) {
-                ClientStatus prevStatus = client.getStatus();
-                client.updateStatus(); //update jesli zmienil sie z pierwotnie przypisanego
-                if (client.getStatus() != prevStatus) {
-                    System.out.println("Status klienta " + client.getName() + " zmienil sie na: " + client.getStatus());
-                }
-                if (client.getStatus() == ClientStatus.LEFT) {
-                    printClientSummary(client);
-                    clients.remove(client);
+            //zwiekszamy czas przygotowania jeszcze niegotowych dan
+            for (Order order : kitchen.getOrders()) {
+                if (order.getStatus() != OrderStatus.READY && order.getStatus() != OrderStatus.CANCELLED) {
+                    order.incrementActualOrderTime();
                 }
             }
 
+            kitchen.processOrders();
+
+            List<Client> clientsToProcess = new ArrayList<>(clients);
+            for (Client client : clientsToProcess) {
+                client.updateStatus();
+                if (client.getStatus() != client.getStatus()) {
+                    System.out.println("Status klienta " + client.getName() + " zmienił się na: " + client.getStatus());
+                }
+                if (client.getStatus() == ClientStatus.LEFT || client.getStatus() == ClientStatus.SERVED) {
+                    completedClients.add(client);
+                }
+            }
             // Dostarczanie gotowych zamówień
             kitchen.deliverOrders();
+            clients.removeAll(completedClients);
+            completedClients.clear();//czysci do kolejnej iteracji
 
-            allServedOrLeft = clients.isEmpty();
+            //sprawdzamy czy kazdy klient zostal obsluzony
+            if (clients.isEmpty() && kitchen.getOrders().isEmpty()) {
+                System.out.println("Wszyscy klienci zostali obsluzeni lub opuscili restauracje!");
+                break;
+            }
         }
         System.out.println("Simulation completed");
+        if (!clients.isEmpty()) {
+            System.out.println("\n--- Podsumowanie klientów pozostałych w restauracji ---");
+            for (Client client : clients) {
+                if (client.getStatus() != ClientStatus.SERVED && client.getStatus() != ClientStatus.LEFT) {
+                    // For clients still waiting when simulation ends
+                    printClientSummary(client);
+                }
+            }
+        }
     }
 
     public void printClientSummary(Client client) {
@@ -85,11 +110,7 @@ public class Simulation {
         System.out.println("Klient: " + client.getName());
         System.out.println("Status: " + client.getStatus());
         System.out.println("Ocena satysfakcji: "+ client.getSatisfactionRating());
-        if(client.getActualWaitTime()<=0){
-            System.out.println("Czas oczekiwania: (>30) jednostek czasu");
-        }else{
-            System.out.println("Czas oczekiwania: " + client.getActualWaitTime()+" jednostek czasu");
-        }
+        System.out.println("Czas oczekiwania: " + client.getActualWaitTime()+" jednostek czasu");
         System.out.println("==========================");
     }
 

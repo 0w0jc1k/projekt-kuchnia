@@ -5,6 +5,8 @@ public class Order {
     private Dish dish;
     private int id;
     private OrderStatus status;
+    private int actualOrderTime; //czas mijajacy od zlozenia zamowienia
+    private int preparationProgress;
 
     public Order(Client client, Dish dish, int id) {
         this.client = client;
@@ -12,6 +14,8 @@ public class Order {
         this.id = id;
         this.status = OrderStatus.PENDING;
         this.client.setOrder(this);
+        this.actualOrderTime = 0;
+        this.preparationProgress = 0;
     }
 
     public Client getClient() {
@@ -35,5 +39,21 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public int getActualOrderTime() {
+        return actualOrderTime;
+    }
+
+    public void incrementActualOrderTime(){
+        actualOrderTime++;
+    }
+
+    public int getPreparationProgress() {
+        return preparationProgress;
+    }
+
+    public void incrementPreparationTime(){
+        preparationProgress++;
     }
 }

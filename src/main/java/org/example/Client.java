@@ -20,18 +20,18 @@ public class Client extends Person {
     }
 
     public int satisfactionCalculation() {// klient otrzymuje danie i daje ocenke
-        if(waitTime >=25 && waitTime <=30) { //ocena klienta w zaleznosci od czasu oczekiwania
-            this.satisfactionRating = 5;
-        }else if(waitTime <=25 && waitTime >=15) {
-            this.satisfactionRating = 4;
-        }else if(waitTime <=15 && waitTime >=10) {
-            this.satisfactionRating = 3;
-        }else if(waitTime <=10 && waitTime >=5) {
-            this.satisfactionRating = 2;
-        }else if(waitTime <=5 && waitTime >=1) {
-            this.satisfactionRating = 1;
+        if(actualWaitTime <= 10) {
+            this.satisfactionRating=5;
+        }else if(actualWaitTime <= 15) {
+            this.satisfactionRating=4;
+        }else if(actualWaitTime <= 20) {
+            this.satisfactionRating=3;
+        }else if(actualWaitTime <= 25) {
+            this.satisfactionRating=2;
+        }else if(actualWaitTime <= 30) {
+            this.satisfactionRating=1;
         }else{
-            this.satisfactionRating = 0;
+            this.satisfactionRating=0;
         }
         return this.satisfactionRating;
     }
@@ -40,21 +40,26 @@ public class Client extends Person {
         if (status == ClientStatus.SERVED || status == ClientStatus.LEFT) {
             return;
         }
-        waitTime= 30 - order.getDish().getPreparationTime();
-        if(waitTime<= 15 && status == ClientStatus.WAITING) {
-            status = ClientStatus.IMPATIENT;
-            System.out.println("Klient: "+getName()+" sie niecierpliwi!");
-        }else if (waitTime <= 0) {
-            status = ClientStatus.LEFT;
-            satisfactionRating = 0;
-            if (order != null) {
-                order.setStatus(OrderStatus.CANCELLED);
-            }
-            System.out.println("Klient: "+getName()+" opuscil restauracje niezadowolony!");
-        } else if (order != null && order.getStatus() == OrderStatus.READY) {
+        if(order != null && order.getStatus() == OrderStatus.READY) {
             status = ClientStatus.SERVED;
-            actualWaitTime = order.getDish().getPreparationTime();
+            actualWaitTime = order.getActualOrderTime();
             satisfactionRating = satisfactionCalculation();
+            System.out.println("Klient: " + getName() + " zostal obsluzony w czasie: " + actualWaitTime + " [jednostek czasu]");
+        }else{
+            actualWaitTime++; //zwieksza czas oczekiwania jesli order nie jest jeszcze gotowy, z kazdym krokiem symulacji
+            //sprawdzamy czy klient sie niecierpliwi lub czy wyszedl
+            if(actualWaitTime>(waitTime - 15)&& status == ClientStatus.WAITING) {
+                status = ClientStatus.IMPATIENT;
+                System.out.println("Klient: "+getName()+" sie niecierpliwi!");
+            }
+            if(actualWaitTime>= waitTime) {
+                status = ClientStatus.LEFT;
+                satisfactionRating = 0;
+                if(order != null){
+                    order.setStatus(OrderStatus.CANCELLED);
+                }
+                System.out.println("Klient: "+getName()+" opuscil restauracje niezadowolony!");
+            }
         }
     }
 
