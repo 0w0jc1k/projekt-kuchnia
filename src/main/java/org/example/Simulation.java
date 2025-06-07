@@ -90,6 +90,7 @@ public class Simulation {
         System.out.println("Pozostali klienci: "+ clients.size());
     }
 
+
     public void printClientSummary(Client client) {
         System.out.println("\n====Podsumowanie klienta====");
         System.out.println("Klient: " + client.getName());
@@ -104,6 +105,7 @@ public class Simulation {
     }
 
     public void saveResults() {
-        //zapisuje do pliku
+        //Wywołujemy Saver, który zapisze wyniki do pliku
+        saver.saveSimulationResults(clients);
     }
 }

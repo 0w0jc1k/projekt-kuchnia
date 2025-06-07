@@ -1,0 +1,5 @@
+=== Obsłużeni klienci ===
+id,name,dish,status,satisfaction,actualWaitTime
+
+=== Nieobsłużeni klienci ===
+id,name,dish,status,satisfaction,actualWaitTime

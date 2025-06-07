@@ -44,14 +44,14 @@ public class Kitchen {
             }
         }
     }
-        private Cook findFreeCook() {
+    private Cook findFreeCook() {
         for (Cook cook : cooks) {
             if( cookAvailability.get(cook) == null ) {
                 return cook;
             }
         }
         return null; //brak wolnych kucharzy
-        }
+    }
 
     public void deliverOrders() {
         Iterator<Order> orderIterator = orders.iterator();
@@ -62,9 +62,9 @@ public class Kitchen {
                 System.out.println("Kuchnia dostarcza zamowienie do " + order.getClient().getName());
                 client.updateStatus();
                 orderIterator.remove();
+            }
         }
     }
-}
 
     public List<Order> getOrders() {
         return orders;
