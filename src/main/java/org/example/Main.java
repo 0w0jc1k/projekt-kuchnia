@@ -18,7 +18,7 @@ public class Main {
             System.out.println("Liczba klientow musi byc wieksza niz 0, podaj ponowna liczbe klientow: ");
             numberOfClients = scanner.nextInt();
         }
-        System.out.println("Wprowadz czas trwania symulacji (w jednostkach czasu): ");
+        System.out.println("Wprowadz czas trwania symulacji (w minutach): ");
         int simulationDuration = scanner.nextInt();
         if (simulationDuration <=0) {
             System.out.println("Czas trwania symulacji musi byc wiekszy niz 0, podaj ponowny czas trwania symulacji: ");
