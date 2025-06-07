@@ -54,64 +54,40 @@ public class Simulation {
 
     public void run() {
         //podstawowa implementacja przebiegu symulacji
-        System.out.println();
-        System.out.println("Simulation started");
+        System.out.println("\nSymulacja rozpoczeta, czas trwania: "+config.getSimulationDuration()+ " minut");
 
-        List<Client> completedClients = new ArrayList<>();
-
-        while (currentTime < config.getSimulationDuration() && (!clients.isEmpty() || !kitchen.getOrders().isEmpty())) {
+        while (currentTime < config.getSimulationDuration() && !clients.isEmpty()) {
             currentTime++;
-            System.out.println("Czas symulacji: " + currentTime);
-
-            //zwiekszamy czas przygotowania jeszcze niegotowych dan
-            for (Order order : kitchen.getOrders()) {
-                if (order.getStatus() != OrderStatus.READY && order.getStatus() != OrderStatus.CANCELLED) {
-                    order.incrementActualOrderTime();
-                }
-            }
-
+            System.out.println("Minuta: " + currentTime);
             kitchen.processOrders();
-
-            List<Client> clientsToProcess = new ArrayList<>(clients);
-            for (Client client : clientsToProcess) {
-                client.updateStatus();
-                if (client.getStatus() != client.getStatus()) {
-                    System.out.println("Status klienta " + client.getName() + " zmienił się na: " + client.getStatus());
-                }
-                if (client.getStatus() == ClientStatus.LEFT || client.getStatus() == ClientStatus.SERVED) {
-                    completedClients.add(client);
-                }
-            }
-            // Dostarczanie gotowych zamówień
             kitchen.deliverOrders();
-            clients.removeAll(completedClients);
-            completedClients.clear();//czysci do kolejnej iteracji
 
-            //sprawdzamy czy kazdy klient zostal obsluzony
-            if (clients.isEmpty() && kitchen.getOrders().isEmpty()) {
-                System.out.println("Wszyscy klienci zostali obsluzeni lub opuscili restauracje!");
-                break;
-            }
-        }
-        System.out.println("Simulation completed");
-        if (!clients.isEmpty()) {
-            System.out.println("\n--- Podsumowanie klientów pozostałych w restauracji ---");
-            for (Client client : clients) {
-                if (client.getStatus() != ClientStatus.SERVED && client.getStatus() != ClientStatus.LEFT) {
-                    // For clients still waiting when simulation ends
+            //aktualizacja statusu klientow
+            Iterator<Client> iterator = clients.iterator();
+            while (iterator.hasNext()) {
+                Client client = iterator.next();
+                client.updateStatus();
+
+                if (client.getStatus() == ClientStatus.SERVED || client.getStatus() == ClientStatus.LEFT) {
                     printClientSummary(client);
+                    iterator.remove();
                 }
             }
         }
+
+        System.out.println("Symulacja zakonczona");
+        System.out.println("\n-----Podsumowanie-----");
+        System.out.println("Czas symulacji: "+currentTime+" minut");
+        System.out.println("Pozostali klienci: "+ clients.size());
     }
 
     public void printClientSummary(Client client) {
-        System.out.println("====Podsumowanie klienta====");
+        System.out.println("\n====Podsumowanie klienta====");
         System.out.println("Klient: " + client.getName());
         System.out.println("Status: " + client.getStatus());
         System.out.println("Ocena satysfakcji: "+ client.getSatisfactionRating());
-        System.out.println("Czas oczekiwania: " + client.getActualWaitTime()+" jednostek czasu");
-        System.out.println("==========================");
+        System.out.println("Czas oczekiwania: " + client.getActualWaitTime()+" minut");
+        System.out.println("==========================\n");
     }
 
     public void removeClient(Client client) {
