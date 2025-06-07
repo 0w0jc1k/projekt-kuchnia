@@ -36,6 +36,8 @@ public class Simulation {
     );
 
     public void initialize() {
+        Set<String> vipNames = Set.of("Pedro Pascal", "Cate Blanchett", "Johnny Depp");
+
         for (int i = 1; i <= config.getNumberOfCooks(); i++) {
             kitchen.addCook(new Cook(i, "Kucharz_" + i));
         }
@@ -43,7 +45,14 @@ public class Simulation {
         for (int i = 1; i <= config.getNumberOfClients(); i++) {
             Random rand = new Random();
             String randomClientName = random_clients_names.get(rand.nextInt(random_clients_names.size()));
-            Client client = new Client(i, randomClientName);
+            Client client;
+
+            if(vipNames.contains(randomClientName)) {
+                client = new VIPClient(i,randomClientName);
+            }else{
+                client = new RegularClient(i,randomClientName);
+            }
+
             clients.add(client);
 
             Dish chosenDish = menu.get(new Random().nextInt(menu.size()));
