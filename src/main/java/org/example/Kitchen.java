@@ -22,47 +22,36 @@ public class Kitchen {
 
     public void processOrders() {
         //wolny kucharz otrzymuje nowe zamowienie
-        for (Order order : new ArrayList<>(orders)) {
+        for (Order order : orders) {
             if (order.getStatus() == OrderStatus.PENDING) {
-                for (Cook cook : cooks) {
-                    if (cookAvailability.get(cook) == null) { //jesli kucharz jest dostepny
-                        order.setStatus(OrderStatus.IN_PROGRESS);
-                        cookAvailability.put(cook, order);
-                        break;
-                    }
+                Cook freeCook = findFreeCook();
+                if (freeCook != null) {
+                    order.setStatus(OrderStatus.IN_PROGRESS);
+                    cookAvailability.put(freeCook, order);
+                    System.out.println(freeCook.getName()+" rozpoczal przygotowywanie "+order.getDish().getName()+" dla "+order.getClient().getName());
                 }
             }
         }
 
         for (Cook cook : cooks) {
-            Order assignedOrder = cookAvailability.get(cook);
-            if (assignedOrder != null && assignedOrder.getStatus() == OrderStatus.IN_PROGRESS) {
-                assignedOrder.incrementPreparationTime();//w zaleznosci od kolejnosci wziecia sie za zamowienie jego czas przygotowania sie zmienia
-                if (assignedOrder.getPreparationProgress() >= assignedOrder.getDish().getPreparationTime()) {
-                    cook.prepareDish(assignedOrder);
-                    cookAvailability.put(cook, null);//zwalniamy kucharza po zrobieniu dania
+            Order order = cookAvailability.get(cook);
+            if(order != null && order.getStatus() == OrderStatus.IN_PROGRESS) {
+                order.incrementPreparationTime();
+                if(order.getPreparationProgress() >= order.getDish().getPreparationTime()) {
+                    cook.prepareDish(order);
+                    cookAvailability.put(cook, null);
                 }
-            }
-        }
-        //usuwamy zamowienia jesli klient wyszedl
-        Iterator<Order> orderIterator = orders.iterator();
-        while (orderIterator.hasNext()) {
-            Order order = orderIterator.next();
-            if (order.getClient() != null && order.getClient().getStatus() == ClientStatus.LEFT) {
-                if (order.getStatus() != OrderStatus.CANCELLED) {
-                    order.setStatus(OrderStatus.CANCELLED);
-                    //uwalniamy kucharza jesli przygotowywal to zamowienie
-                    for (Map.Entry<Cook, Order> entry : cookAvailability.entrySet()) {
-                        if (entry.getValue() == order) {
-                            cookAvailability.put(entry.getKey(), null);
-                            break;
-                        }
-                    }
-                }
-                orderIterator.remove();//usuwa z listy usuniete zamowienie
             }
         }
     }
+        private Cook findFreeCook() {
+        for (Cook cook : cooks) {
+            if( cookAvailability.get(cook) == null ) {
+                return cook;
+            }
+        }
+        return null; //brak wolnych kucharzy
+        }
 
     public void deliverOrders() {
         Iterator<Order> orderIterator = orders.iterator();
@@ -72,7 +61,6 @@ public class Kitchen {
                 Client client = order.getClient();
                 System.out.println("Kuchnia dostarcza zamowienie do " + order.getClient().getName());
                 client.updateStatus();
-                simulation.printClientSummary(client);
                 orderIterator.remove();
         }
     }
