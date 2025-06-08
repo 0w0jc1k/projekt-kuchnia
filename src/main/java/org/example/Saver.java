@@ -8,6 +8,9 @@ import java.util.List;
 public class Saver {
     public void saveSimulationResults(List<Client> allClients) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("wyniksymulacji.txt"))) {
+            int totalRating =0;
+            int ratedCount = 0;
+
             writer.write("=== Obsłużeni klienci ===");
             writer.newLine();
             writer.write("id,name,dish,status,satisfaction,actualWaitTime");
@@ -39,14 +42,30 @@ public class Saver {
                                     c.getName() + "," +
                                     dish + "," +
                                     c.getStatus() + "," +
-                                    c.getSatisfactionRating() + "," +
+                                    "-" + "," +
                                     c.getActualWaitTime()
                     );
                     writer.newLine();
                 }
+                if (c.getStatus() == ClientStatus.SERVED) {
+                    totalRating += c.getSatisfactionRating();
+                    ratedCount++;
+                }
+            }
+            writer.newLine();
+            writer.write("==== Statystyki ====");
+            writer.newLine();
+
+            if (ratedCount > 0) {
+                double avgRating = (double) totalRating / ratedCount;
+                writer.write("Średnia ocena obsłużonych klientów: " + String.format("%.2f", avgRating));
+            } else {
+                writer.write("Brak obsłużonych klientów.");
             }
 
-            System.out.println("Wyniki symulacji zostały zapisane do pliku.");
+            writer.newLine();
+            System.out.println();
+            System.out.println("***Wyniki symulacji zostały zapisane do pliku.***");
         } catch (IOException e) {
             System.err.println("Błąd zapisu wyników symulacji: " + e.getMessage());
         }

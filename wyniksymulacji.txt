@@ -1,17 +1,22 @@
 === Obsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-8,Pedro Pascal,Zupa pomidorowa,SERVED,5,8
-3,Cate Blanchett,Lasagne,SERVED,4,14
-11,Cate Blanchett,Lasagne,SERVED,4,14
+4,Robert Downey Jr.,Bruschetta,SERVED,5,4
+5,Jennifer Lawrence,Zupa pomidorowa,SERVED,4,12
+10,Johnny Depp,Sałatka Cezar,SERVED,4,12
+6,Johnny Depp,Sushi,SERVED,4,15
+1,Johnny Depp,Burger,SERVED,3,17
+9,Bradley Cooper,Bruschetta,SERVED,3,19
+2,Robert Downey Jr.,Pizza,SERVED,3,20
+3,Johnny Depp,Pizza,SERVED,3,20
+7,Timothee Chalamet,Zupa pomidorowa,SERVED,3,20
+13,Bradley Cooper,Bruschetta,SERVED,2,24
 
 === Nieobsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-1,Bradley Cooper,Burger,WAITING,4,14
-2,Chris Evans,Makaron Carbonara,WAITING,4,14
-4,Chris Evans,Lasagne,WAITING,4,14
-5,Jennifer Lawrence,Makaron Carbonara,WAITING,4,14
-6,Chris Evans,Burger,WAITING,4,14
-7,Bradley Cooper,Pizza,WAITING,4,14
-9,Jennifer Lawrence,Sałatka Cezar,WAITING,4,14
-10,Jennifer Lawrence,Karpatka,WAITING,4,14
-12,Jennifer Lawrence,Burger,WAITING,4,14
+8,Ryan Gosling,Pizza,IMPATIENT,-,27
+11,Jennifer Lawrence,Sushi,IMPATIENT,-,27
+12,Timothee Chalamet,Burger,IMPATIENT,-,27
+14,Robert Downey Jr.,Sushi,IMPATIENT,-,27
+
+==== Statystyki ====
+Średnia ocena obsłużonych klientów: 3,40

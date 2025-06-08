@@ -1,10 +1,36 @@
 package org.example;
 
+/**
+ * Klasa klient reprezentuje klienta kuchni w symulacji
+ * To klasa abstrakcyjna dla roznych typow klientow (regular i VIP)
+ * Klienci moga skladac zamowienia, czekac na nie oraz wystawiac swoja ocene na podstawie
+ * czasu oczekiwania na zamowione danie
+ *
+ * @author Aleksandra Wojcik, Katarzyna Druciak
+ * @see RegularClient
+ * @see VIPClient
+ */
+
 public abstract class Client extends Person implements ClientAction{
+    /**
+     * maksymalny czas oczekiwania klienta na zamowienie (w minutach)
+     */
     protected int waitTime;
+    /**
+     * Ocena klienta od 0 do 5
+     */
     protected int satisfactionRating;
+    /**
+     * Obecny status klienta
+     */
     protected ClientStatus status;
+    /**
+     * Zamowienie zlozone przez klienta
+     */
     protected Order order;
+    /**
+     * Faktyczny stan oczekiwania klienta
+     */
     protected int actualWaitTime = 0;
 
     public Client(int id, String name) {

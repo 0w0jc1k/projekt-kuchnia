@@ -95,7 +95,6 @@ public class Simulation {
         for (Client client : clients) {
             if (client.getStatus() == ClientStatus.WAITING || client.getStatus() == ClientStatus.IMPATIENT) {
                 client.setActualWaitTime(currentTime);
-                client.setSatisfactionRating(client.satisfactionCalculation()); // ocenianie wg czasu
             }
         }
 
