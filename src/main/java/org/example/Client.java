@@ -61,6 +61,9 @@ public abstract class Client extends Person implements ClientAction{
     public int getActualWaitTime(){
         return actualWaitTime;
     }
+    public void setActualWaitTime(int time) {
+        this.actualWaitTime = time;
+    }
 
     public int getWaitTime() {
         return waitTime;
@@ -80,6 +83,11 @@ public abstract class Client extends Person implements ClientAction{
 
     public int getSatisfactionRating() {
         return satisfactionRating;
+    }
+
+
+    public void setSatisfactionRating(int rating) {
+        this.satisfactionRating = rating;
     }
 
     public Order getOrder() {
