@@ -1,30 +1,70 @@
 package org.example;
 import java.util.*;
 
+/**
+ * Wnetrze kuchni zarzadzajace przetwarzaniem zamowien i przyporzadkowywaniem
+ * kucharzy.
+ * Zarzadza zarowno regularnymi, jak i priorytetowymi zamowieniami.
+ */
 public class Kitchen {
+    /**
+     * Lista przechowujaca kucharzy
+     */
     private List<Cook> cooks = new ArrayList<>();
+    /**
+     * Lista przechowujaca zamowienia regularne
+     */
     private List<Order> orders = new ArrayList<>();
+    /**
+     * Lista przechowujaca zamowienia VIP-ow
+     */
     private List<Order> vipOrders = new ArrayList<>();
-    private Map<Cook, Order> cookAvailability = new HashMap<>();//przechowuje czy kucharz jest wolny w danym momencie
+    /**
+     * HashMapa przechowujaca informacje o dostepnosci kucharza
+     */
+    private Map<Cook, Order> cookAvailability = new HashMap<>();
+    /**
+     * Referencja do symulacji
+     */
     private Simulation simulation;
 
+    /**
+     * Konstruktor do tworzenia nowej instancji new Kitchen
+     * @param simulation symulacja
+     */
     public Kitchen(Simulation simulation) {
         this.simulation = simulation;
     }
 
+    /**
+     * Dodaje kucharza do listy
+     * @param cook kucharz, ktorego chcemy dodac
+     */
     public void addCook(Cook cook) {
         cooks.add(cook);
         cookAvailability.put(cook, null); //inicjalizuje, ze poczatkowo kazdy kucharz jest wolny
     }
 
+    /**
+     * Dodaje zamowienie do listy regularnej
+     * @param order zamowienie, ktore chcemy dodac
+     */
     public void addOrder(Order order) {
         orders.add(order);
     }
 
+    /**
+     * Dodaje zamowienie do listy VIP-owej
+     * @param order zamowienie, ktore chcemy dodac
+     */
     public void addVipOrder(Order order) {
         vipOrders.add(order);
     }
 
+    /**
+     * Przetwarza zlozone zamowienia, w kolejnosci najpierw priorytetowej
+     * (zlozone przez VIP-a), a pozniej regularnej (zlozone przez klienta regularnego)
+     */
     public void processOrders() {
         //wolny kucharz otrzymuje nowe zamowienie vip (priorytet)
         for (Order order : vipOrders) {
@@ -61,6 +101,11 @@ public class Kitchen {
             }
         }
     }
+
+    /**
+     * Znajduje wolnego kucharza do przydzielenia mu zamowienia
+     * @return wolny kucharz lub null jesli kazdy jest zajety
+     */
     public Cook findFreeCook() {
         for (Cook cook : cooks) {
             if( cookAvailability.get(cook) == null ) {
@@ -70,6 +115,9 @@ public class Kitchen {
         return null; //brak wolnych kucharzy
     }
 
+    /**
+     * Dostarcza zamowienia do klientow i aktualizuje ich statusy
+     */
     public void deliverOrders() {
         //dostarczamy zamowienia VIP
         Iterator<Order> vipIterator = vipOrders.iterator();
@@ -95,9 +143,10 @@ public class Kitchen {
         }
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
+    /**
+     * Zwraca przypisanie kucharza do dania
+     * @return przypisanie kucharza do dania
+     */
     public Map<Cook, Order> getCookAvailability() {
         return cookAvailability;
     }

@@ -1,17 +1,16 @@
 === Obsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-8,Pedro Pascal,Zupa pomidorowa,SERVED,5,8
-3,Cate Blanchett,Lasagne,SERVED,4,14
-11,Cate Blanchett,Lasagne,SERVED,4,14
+3,Dakota Johnson,Bruschetta,SERVED,5,4
+7,Cate Blanchett,Bruschetta,SERVED,5,4
 
 === Nieobsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-1,Bradley Cooper,Burger,WAITING,4,14
-2,Chris Evans,Makaron Carbonara,WAITING,4,14
-4,Chris Evans,Lasagne,WAITING,4,14
-5,Jennifer Lawrence,Makaron Carbonara,WAITING,4,14
-6,Chris Evans,Burger,WAITING,4,14
-7,Bradley Cooper,Pizza,WAITING,4,14
-9,Jennifer Lawrence,Sałatka Cezar,WAITING,4,14
-10,Jennifer Lawrence,Karpatka,WAITING,4,14
-12,Jennifer Lawrence,Burger,WAITING,4,14
+1,Pedro Pascal,Pizza,WAITING,-,8
+2,Cate Blanchett,Makaron Carbonara,WAITING,-,8
+4,Robert Downey Jr.,Makaron Carbonara,WAITING,-,8
+5,Dakota Johnson,Pierogi,WAITING,-,8
+6,Cate Blanchett,Sałatka Cezar,WAITING,-,8
+8,Timothee Chalamet,Burger,WAITING,-,8
+
+==== Statystyki ====
+Średnia ocena obsłużonych klientów: 5,00

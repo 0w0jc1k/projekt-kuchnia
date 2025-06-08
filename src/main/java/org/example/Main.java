@@ -1,14 +1,14 @@
 package org.example;
-
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import java.util.Scanner;
 
+/**
+ * Glowne miejsce dostepu do symulacji.
+ * Przetwarza dane wprowadzone przez uzytkownika i uruchamia przebieg symulacji.
+ */
 public class Main {
-    private Simulation simulation;
+    /**
+     * Glowna metoda, ktora uruchamia symulacje
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);

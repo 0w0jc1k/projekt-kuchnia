@@ -1,16 +1,44 @@
 package org.example;
-
 import java.util.*;
 
+/**
+ * Glowne miejsce do zarzadzania symulacja i jej mozliwymi scenariuszami.
+ * Koordynuje komponentami i kontroluje progres symulacji.
+ */
 public class Simulation {
+    /**
+     * Kuchnia, w ktorej odbywa sie symulacja
+     */
     private Kitchen kitchen;
+    /**
+     * Lista przechowujaca aktywnych klientow symulacji
+     */
     private List<Client> clients;
+    /**
+     * Lista przechowujaca obsluzonych klientow symulacji
+     */
     private List<Client> servedClients;
+    /**
+     * Lista obslugujaca klientow, ktorzy opuscili kuchnie
+     */
     private List<Client> leftClients;
+    /**
+     * Konfiguracje symulacji
+     */
     private Configuration config;
+    /**
+     * Komponent zapisujacy rezultaty symulacji
+     */
     private Saver saver;
+    /**
+     * Obecny czas trwania symulacji w minutach
+     */
     private int currentTime;
 
+    /**
+     * Konstruktor do tworzenia nowej instancji new Simulation
+     * @param config konfiguracje symulacji
+     */
     public Simulation(Configuration config) {
         this.config = config;
         this.kitchen = new Kitchen(this);
@@ -21,11 +49,16 @@ public class Simulation {
         this.currentTime = 0;
     }
 
+    /**
+     * Ustalona wczesniej lista mozliwych imion klientow
+     */
     private static final List<String> random_clients_names = Arrays.asList(
             "Pedro Pascal", "Chris Evans", "Johnny Depp", "Robert Downey Jr.", "Timothee Chalamet",
             "Cate Blanchett", "Jennifer Lawrence", "Dakota Johnson", "Bradley Cooper", "Ryan Gosling"
     );
-
+    /**
+     * Ustalona wczesniej lista nazw poszczegolnych dan i czasu ich przygotowania
+     */
     private final static List<Dish> menu = Arrays.asList(
             new Dish("Sushi", 15),
             new Dish("Karpatka", 25),
@@ -39,6 +72,10 @@ public class Simulation {
             new Dish("Makaron Carbonara", 35)
     );
 
+    /**
+     * Inicjalizuje przebieg symulacji.
+     *Tworzy kucharzy oraz klientow w skonfigurowany sposob.
+     */
     public void initialize() {
         Set<String> vipNames = Set.of("Pedro Pascal", "Cate Blanchett", "Johnny Depp");
 
@@ -65,6 +102,10 @@ public class Simulation {
         System.out.println("===================================");
     }
 
+    /**
+     * Uruchamia glowna petle symulacji.
+     * Przetwarza zamowienia i aktualizuje stany do momentu zakonczenia symulacji.
+     */
     public void run() {
         System.out.println("\nSymulacja rozpoczeta, czas trwania: " + config.getSimulationDuration() + " minut");
 
@@ -95,7 +136,6 @@ public class Simulation {
         for (Client client : clients) {
             if (client.getStatus() == ClientStatus.WAITING || client.getStatus() == ClientStatus.IMPATIENT) {
                 client.setActualWaitTime(currentTime);
-                client.setSatisfactionRating(client.satisfactionCalculation()); // ocenianie wg czasu
             }
         }
 
@@ -105,7 +145,10 @@ public class Simulation {
         System.out.println("Pozostali klienci: " + clients.size());
     }
 
-
+    /**
+     * Zwraca podsumowanie doswiadczenia klienta
+     * @param client klient, ktorego podsumowanie chcemy otrzymac
+     */
     public void printClientSummary(Client client) {
         System.out.println("\n====Podsumowanie klienta====");
         System.out.println("Klient: " + client.getName());
@@ -115,10 +158,9 @@ public class Simulation {
         System.out.println("==========================\n");
     }
 
-    public void removeClient(Client client) {
-        clients.remove(client);
-    }
-
+    /**
+     * Zapisuje koncowe wyniki symulacji do odpowiedniego pliku
+     */
     public void saveResults() {
         List<Client> allClients = new ArrayList<>();
         allClients.addAll(servedClients);
