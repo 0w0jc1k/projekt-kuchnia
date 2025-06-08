@@ -5,7 +5,7 @@ public abstract class Client extends Person implements ClientAction{
     protected int satisfactionRating;
     protected ClientStatus status;
     protected Order order;
-    protected int actualWaitTime = 1;
+    protected int actualWaitTime = 0;
 
     public Client(int id, String name) {
         super(id, name);
@@ -37,7 +37,7 @@ public abstract class Client extends Person implements ClientAction{
             actualWaitTime++;
 
             //sprawdzamy czy klient sie niecierpliwi lub czy wyszedl
-            if(actualWaitTime>(waitTime - 15)&& status == ClientStatus.WAITING) {
+            if(actualWaitTime>=(waitTime - 15)&& status == ClientStatus.WAITING) {
                 status = ClientStatus.IMPATIENT;
                 System.out.println("Klient: "+getName()+" sie niecierpliwi!");
             }
@@ -56,8 +56,6 @@ public abstract class Client extends Person implements ClientAction{
         this.order = new Order(this,dish,1); //przykladowe zamowienie
         kitchen.addOrder(this.order);
         System.out.println(getId()+". [VIP] "+getName() + " zamówił/a: " + dish.getName());
-        kitchen.getOrders().remove(this.order);//vipowie maja priorytet w przygotowaniu zamowienia
-        kitchen.getOrders().add(0,this.order);
     }
 
     public int getActualWaitTime(){

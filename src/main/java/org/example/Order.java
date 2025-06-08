@@ -14,7 +14,7 @@ public class Order {
         this.id = id;
         this.status = OrderStatus.PENDING;
         this.client.setOrder(this);
-        this.actualOrderTime = 0;
+        this.actualOrderTime = 1;
         this.preparationProgress = 0;
     }
 

@@ -67,9 +67,9 @@ public class Simulation {
 
         while (currentTime < config.getSimulationDuration() && !clients.isEmpty()) {
             currentTime++;
-            System.out.println("Minuta: " + currentTime);
             kitchen.processOrders();
             kitchen.deliverOrders();
+            System.out.println("Minuta: " + currentTime);
 
             //aktualizacja statusu klientow
             Iterator<Client> iterator = clients.iterator();
