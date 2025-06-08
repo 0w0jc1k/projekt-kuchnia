@@ -36,6 +36,8 @@ public class Simulation {
     );
 
     public void initialize() {
+        Set<String> vipNames = Set.of("Pedro Pascal", "Cate Blanchett", "Johnny Depp");
+
         for (int i = 1; i <= config.getNumberOfCooks(); i++) {
             kitchen.addCook(new Cook(i, "Kucharz_" + i));
         }
@@ -43,7 +45,14 @@ public class Simulation {
         for (int i = 1; i <= config.getNumberOfClients(); i++) {
             Random rand = new Random();
             String randomClientName = random_clients_names.get(rand.nextInt(random_clients_names.size()));
-            Client client = new Client(i, randomClientName);
+            Client client;
+
+            if(vipNames.contains(randomClientName)) {
+                client = new VIPClient(i,randomClientName);
+            }else{
+                client = new RegularClient(i,randomClientName);
+            }
+
             clients.add(client);
 
             Dish chosenDish = menu.get(new Random().nextInt(menu.size()));
@@ -58,9 +67,9 @@ public class Simulation {
 
         while (currentTime < config.getSimulationDuration() && !clients.isEmpty()) {
             currentTime++;
-            System.out.println("Minuta: " + currentTime);
             kitchen.processOrders();
             kitchen.deliverOrders();
+            System.out.println("Minuta: " + currentTime);
 
             //aktualizacja statusu klientow
             Iterator<Client> iterator = clients.iterator();
@@ -81,6 +90,7 @@ public class Simulation {
         System.out.println("Pozostali klienci: "+ clients.size());
     }
 
+
     public void printClientSummary(Client client) {
         System.out.println("\n====Podsumowanie klienta====");
         System.out.println("Klient: " + client.getName());
@@ -95,6 +105,7 @@ public class Simulation {
     }
 
     public void saveResults() {
-        //zapisuje do pliku
+        //Wywołujemy Saver, który zapisze wyniki do pliku
+        saver.saveSimulationResults(clients);
     }
 }

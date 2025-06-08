@@ -1,23 +1,16 @@
 package org.example;
 
-public class Client extends Person implements ClientAction{
-    private int waitTime;
-    private int satisfactionRating;
-    private ClientStatus status;
-    private Order order;
-    private int actualWaitTime = 0;
+public abstract class Client extends Person implements ClientAction{
+    protected int waitTime;
+    protected int satisfactionRating;
+    protected ClientStatus status;
+    protected Order order;
+    protected int actualWaitTime = 0;
 
     public Client(int id, String name) {
         super(id, name);
         this.waitTime = 30;
         this.status = ClientStatus.WAITING;
-    }
-
-    @Override
-    public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie w kuchni
-        this.order = new Order(this,dish,1); //przykladowe zamowienie
-        kitchen.addOrder(this.order);
-        System.out.println(getId()+". "+getName() + " zamówił/a: " + dish.getName());
     }
 
     public int satisfactionCalculation() {// klient otrzymuje danie i daje ocenke
@@ -41,11 +34,10 @@ public class Client extends Person implements ClientAction{
             System.out.println("Klient: " + getName() + " zostal obsluzony/a w czasie: " + actualWaitTime + " minut");
         }else if(order != null) {
             order.incrementActualOrderTime();
-
             actualWaitTime++;
 
             //sprawdzamy czy klient sie niecierpliwi lub czy wyszedl
-            if(actualWaitTime>(waitTime - 15)&& status == ClientStatus.WAITING) {
+            if(actualWaitTime>=(waitTime - 15)&& status == ClientStatus.WAITING) {
                 status = ClientStatus.IMPATIENT;
                 System.out.println("Klient: "+getName()+" sie niecierpliwi!");
             }
@@ -58,6 +50,12 @@ public class Client extends Person implements ClientAction{
                 System.out.println("Klient: "+getName()+" opuscil/a restauracje niezadowolony po "+actualWaitTime+" minutach");
             }
         }
+    }
+    @Override
+    public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie w kuchni
+        this.order = new Order(this,dish,1); //przykladowe zamowienie
+        kitchen.addOrder(this.order);
+        System.out.println(getId()+". [VIP] "+getName() + " zamówił/a: " + dish.getName());
     }
 
     public int getActualWaitTime(){
@@ -87,4 +85,5 @@ public class Client extends Person implements ClientAction{
     public Order getOrder() {
         return order;
     }
+
 }

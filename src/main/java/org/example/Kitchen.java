@@ -4,6 +4,7 @@ import java.util.*;
 public class Kitchen {
     private List<Cook> cooks = new ArrayList<>();
     private List<Order> orders = new ArrayList<>();
+    private List<Order> vipOrders = new ArrayList<>();
     private Map<Cook, Order> cookAvailability = new HashMap<>();//przechowuje czy kucharz jest wolny w danym momencie
     private Simulation simulation;
 
@@ -20,15 +21,31 @@ public class Kitchen {
         orders.add(order);
     }
 
+    public void addVipOrder(Order order) {
+        vipOrders.add(order);
+    }
+
     public void processOrders() {
-        //wolny kucharz otrzymuje nowe zamowienie
+        //wolny kucharz otrzymuje nowe zamowienie vip (priorytet)
+        for (Order order : vipOrders) {
+            if (order.getStatus() == OrderStatus.PENDING) {
+                Cook freeCook = findFreeCook();
+                if (freeCook != null) {
+                    order.setStatus(OrderStatus.IN_PROGRESS);
+                    cookAvailability.put(freeCook, order);
+                    System.out.println(freeCook.getName()+" rozpoczal przygotowywanie: "+order.getDish().getName()+" dla VIP-a "+order.getClient().getName());
+                }
+            }
+        }
+
+        //kucharz otrzymuje zamowienia regularnych klientow
         for (Order order : orders) {
             if (order.getStatus() == OrderStatus.PENDING) {
                 Cook freeCook = findFreeCook();
                 if (freeCook != null) {
                     order.setStatus(OrderStatus.IN_PROGRESS);
                     cookAvailability.put(freeCook, order);
-                    System.out.println(freeCook.getName()+" rozpoczal przygotowywanie "+order.getDish().getName()+" dla "+order.getClient().getName());
+                    System.out.println(freeCook.getName()+" rozpoczal przygotowywanie: "+order.getDish().getName()+" dla "+order.getClient().getName());
                 }
             }
         }
@@ -44,16 +61,28 @@ public class Kitchen {
             }
         }
     }
-        private Cook findFreeCook() {
+    public Cook findFreeCook() {
         for (Cook cook : cooks) {
             if( cookAvailability.get(cook) == null ) {
                 return cook;
             }
         }
         return null; //brak wolnych kucharzy
-        }
+    }
 
     public void deliverOrders() {
+        //dostarczamy zamowienia VIP
+        Iterator<Order> vipIterator = vipOrders.iterator();
+        while(vipIterator.hasNext()) {
+            Order order = vipIterator.next();
+            if(order.getStatus() == OrderStatus.READY) {
+                Client client = order.getClient();
+                System.out.println("Kuchnia dostarcza zamowienie priorytetowe do: " + order.getClient().getName());
+                client.updateStatus();
+                vipIterator.remove();
+            }
+        }
+        //dostarczamy zamowienia regularne
         Iterator<Order> orderIterator = orders.iterator();
         while(orderIterator.hasNext()) {
             Order order = orderIterator.next();
@@ -62,12 +91,14 @@ public class Kitchen {
                 System.out.println("Kuchnia dostarcza zamowienie do " + order.getClient().getName());
                 client.updateStatus();
                 orderIterator.remove();
+            }
         }
     }
-}
 
     public List<Order> getOrders() {
         return orders;
     }
+    public Map<Cook, Order> getCookAvailability() {
+        return cookAvailability;
+    }
 }
-

@@ -1,0 +1,12 @@
+=== Obsłużeni klienci ===
+id,name,dish,status,satisfaction,actualWaitTime
+
+=== Nieobsłużeni klienci ===
+id,name,dish,status,satisfaction,actualWaitTime
+1,Pedro Pascal,Sushi,WAITING,0,7
+2,Johnny Depp,Pizza,WAITING,0,7
+3,Timothee Chalamet,Karpatka,WAITING,0,7
+4,Jennifer Lawrence,Karpatka,WAITING,0,7
+5,Pedro Pascal,Pierogi,WAITING,0,7
+6,Dakota Johnson,Lasagne,WAITING,0,7
+7,Ryan Gosling,Burger,WAITING,0,7
