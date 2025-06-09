@@ -1,12 +1,17 @@
 === Obsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
+8,Pedro Pascal,Zupa pomidorowa,SERVED,5,8
+3,Cate Blanchett,Lasagne,SERVED,4,14
+11,Cate Blanchett,Lasagne,SERVED,4,14
 
 === Nieobsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-1,Pedro Pascal,Sushi,WAITING,0,7
-2,Johnny Depp,Pizza,WAITING,0,7
-3,Timothee Chalamet,Karpatka,WAITING,0,7
-4,Jennifer Lawrence,Karpatka,WAITING,0,7
-5,Pedro Pascal,Pierogi,WAITING,0,7
-6,Dakota Johnson,Lasagne,WAITING,0,7
-7,Ryan Gosling,Burger,WAITING,0,7
+1,Bradley Cooper,Burger,WAITING,4,14
+2,Chris Evans,Makaron Carbonara,WAITING,4,14
+4,Chris Evans,Lasagne,WAITING,4,14
+5,Jennifer Lawrence,Makaron Carbonara,WAITING,4,14
+6,Chris Evans,Burger,WAITING,4,14
+7,Bradley Cooper,Pizza,WAITING,4,14
+9,Jennifer Lawrence,Sałatka Cezar,WAITING,4,14
+10,Jennifer Lawrence,Karpatka,WAITING,4,14
+12,Jennifer Lawrence,Burger,WAITING,4,14

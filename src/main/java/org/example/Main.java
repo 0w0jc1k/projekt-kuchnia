@@ -1,8 +1,14 @@
 package org.example;
-
 import java.util.Scanner;
 
+/**
+ * Glowne miejsce dostepu do symulacji.
+ * Przetwarza dane wprowadzone przez uzytkownika i uruchamia przebieg symulacji.
+ */
 public class Main {
+    /**
+     * Glowna metoda, ktora uruchamia symulacje
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
