@@ -1,0 +1,41 @@
+
+@startuml
+title Diagram Stanów - dla klienta
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+state "Klient" as ClientLifeCycle {
+    [*] --> WAITING : Klient przyszedł (składa zamówienie)
+
+    WAITING --> IMPATIENT : Po (waitTime - 15) minutach
+
+    IMPATIENT --> LEFT : brak reakcji
+    WAITING --> LEFT : brak reakcji
+
+    WAITING --> SERVED : Zamówienie dostarczone
+    IMPATIENT --> SERVED : Zamówienie dostarczone
+
+    SERVED --> [*] : Kient obsłużony
+    LEFT --> [*] : Opuszczenie restauracji
+}
+@enduml
+
+@startuml
+title Diagram Stanów - dla zamówienia
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+
+state "Zamówienie" as OrderLifeCycle {
+    [*] --> PENDING : Złożono zamówienie
+
+    PENDING --> IN_PROGRESS : Zamówienie zostało przekierowane do kucharza
+
+    IN_PROGRESS --> READY : Zamówienie gotowe
+    IN_PROGRESS --> CANCELLED : Klient wyszedł
+
+    READY --> [*] : Zamówienie dostarczone
+    CANCELLED --> [*] : Zamówienie anulowane
+}
+@enduml

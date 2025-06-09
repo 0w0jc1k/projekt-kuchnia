@@ -1,0 +1,92 @@
+@startuml
+title Diagram obiektów
+
+'Obiekty
+object "Kucharz1" as cook1 {
+  id = 1
+  name = "Kucharz_1"
+}
+
+object "(VIP) Pedro Pascal" as clientVIP {
+  id = 1
+  name = "Pedro Pascal"
+  status = SERVED
+  actualWaitTime = 12
+  satisfactionRating = 4
+}
+
+object "Chris Evans" as clientReg {
+  id = 2
+  name = "Chris Evans"
+  status = WAITING
+  actualWaitTime = 0
+  satisfactionRating = '-'
+}
+
+object "Ryan Gosling" as clientReg2 {
+  id = 3
+  name = "Ryan Gosling"
+  status = LEFT
+  actualWaitTime = 35
+  satisfactionRating = 0
+}
+object "zamówienie1" as order1 {
+  id = 11
+  status = READY
+  actualOrderTime= 5
+  progress = 5
+}
+
+object "zamówienie2" as order2 {
+  id = 22
+  status = PENDING
+  actualOrderTime 0
+  preparationTime = 0
+}
+object "zamówienie3" as order3 {
+  id = 33
+  status = CANCELLED
+  actualOrderTime 0
+  preparationTime = 0
+}
+object "Pizza" as dish1 {
+  id = 111
+  name = "Pizza"
+  prepTime = 11
+}
+
+object "Sushi" as dish2 {
+  id = 222
+  name = "Sushi"
+  prepTime = 15
+}
+object "Karpatka" as dish3 {
+  id = 333
+  name = "Karpatka"
+  prepTime = 15
+}
+
+
+object "Kuchnia" as kitchen {
+}
+
+'Relacje
+clientVIP --> order1 : "składa (VIP)"
+clientReg --> order2 : "składa"
+clientReg2 --> order3 : "składa (anulowane)"
+
+'Zamówienie
+order1 --> dish1 : "zawiera: Pizza"
+order2 --> dish2 : "zawiera: Sushi"
+order3 --> dish3 : "miał zawierać: Karpatkę"
+
+'Kucharz
+cook1 --> order1 : "przygotowuje"
+
+'Kuchnia
+kitchen --> cook1 : "przydziela kucharza"
+kitchen --> order1 : "w trakcie realizacji"
+kitchen --> order2 : "oczekuje"
+kitchen --> order3 : "anulowane"
+
+@enduml
