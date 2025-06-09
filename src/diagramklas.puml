@@ -1,0 +1,174 @@
+@startuml
+title Diagram klas
+abstract class Person {
+    #id: int
+    #name: String
+    +Person(id: int, name: String)
+    +getId(): int
+    +getName(): String
+}
+
+abstract class Client {
+    #waitTime: int
+    #satisfactionRating: int
+    #status: ClientStatus
+    #order: Order
+    #actualWaitTime: int
+    +Client(id: int, name: String)
+    +satisfactionCalculation(): int
+    +updateStatus(): void
+    +placeOrder(dish: Dish, kitchen: Kitchen): void
+    +getActualWaitTime(): int
+    +setActualWaitTime(time: int): void
+    +setOrder(order: Order): void
+    +getStatus(): ClientStatus
+    +getSatisfactionRating(): int
+    +getOrder(): Order
+}
+
+interface ClientAction {
+    +placeOrder(dish: Dish, kitchen: Kitchen): void
+    +updateStatus(): void
+}
+
+enum ClientStatus {
+    WAITING
+    IMPATIENT
+    SERVED
+    LEFT
+}
+
+class Configuration {
+    -numberOfCooks: int
+    -numberOfClients: int
+    -simulationDuration: int
+    +Configuration(numberOfCooks: int, numberOfClients: int, simulationDuration: int)
+    +getNumberOfCooks(): int
+    +getNumberOfClients(): int
+    +getSimulationDuration(): int
+}
+
+class Cook {
+    +Cook(id: int, name: String)
+    +prepareDish(order: Order): void
+}
+
+class Dish {
+    -name: String
+    -preparationTime: int
+    +Dish(name: String, preparationTime: int)
+    +getName(): String
+    +getPreparationTime(): int
+}
+
+class Kitchen {
+    -cooks: List<Cook>
+    -orders: List<Order>
+    -vipOrders: List<Order>
+    -cookAvailability: Map<Cook, Order>
+    -simulation: Simulation
+    +Kitchen(simulation: Simulation)
+    +addCook(cook: Cook): void
+    +addOrder(order: Order): void
+    +addVipOrder(order: Order): void
+    +processOrders(): void
+    +findFreeCook(): Cook
+    +deliverOrders(): void
+    +getCookAvailability(): Map<Cook, Order>
+}
+
+class Main {
+    +main(args: String[]): void {static}
+}
+
+class Order {
+    -client: Client
+    -dish: Dish
+    -id: int
+    -status: OrderStatus
+    -actualOrderTime: int
+    -preparationProgress: int
+    +Order(client: Client, dish: Dish, id: int)
+    +getClient(): Client
+    +getDish(): Dish
+    +getStatus(): OrderStatus
+    +setStatus(status: OrderStatus): void
+    +getActualOrderTime(): int
+    +incrementActualOrderTime(): void
+    +getPreparationProgress(): int
+    +incrementPreparationTime(): void
+}
+
+enum OrderStatus {
+    PENDING
+    IN_PROGRESS
+    READY
+    CANCELLED
+}
+
+class RegularClient {
+    +RegularClient(id: int, name: String)
+    +placeOrder(dish: Dish, kitchen: Kitchen): void
+}
+
+class Simulation {
+    -kitchen: Kitchen
+    -clients: List<Client>
+    -servedClients: List<Client>
+    -leftClients: List<Client>
+    -config: Configuration
+    -saver: Saver
+    -currentTime: int
+    -random_clients_names: List<String> {static}
+    -menu: List<Dish> {static}
+    +Simulation(config: Configuration)
+    +initialize(): void
+    +run(): void
+    +printClientSummary(client: Client): void
+    +saveResults(): void
+}
+
+class Saver {
+    +saveSimulationResults(allClients: List<Client>): void
+}
+
+class VIPClient {
+    +VIPClient(id: int, name: String)
+    +placeOrder(dish: Dish, kitchen: Kitchen): void
+}
+
+
+'Relacje dziedziczenia/implementacji
+Person <|-- Client
+Person <|-- Cook
+Client <|.. ClientAction
+Client <|-- RegularClient
+Client <|-- VIPClient
+
+
+'Relacje agregacji i kompozycji
+Order "1" --> "1" Dish : używa
+Order "1" --> "1" Client : od
+
+Kitchen "1" *-- "0..*" Cook
+Kitchen "1" o-- "0..*" Order : zamawia
+
+
+Simulation "1" *-- "1" Kitchen
+Simulation "1" *-- "1" Configuration
+Simulation "1" *-- "1" Saver
+Simulation "1" o-- "0..*" Client
+Simulation "1" --> "0..*" Dish : menu
+
+Main ..> Configuration : tworzy
+Main ..> Simulation : tworzy
+
+
+
+'Relacje zależności między klasami
+Client --> ClientStatus
+Order --> OrderStatus
+RegularClient ..> Order
+VIPClient ..> Order
+Saver ..> Client : zapisuje do pliku
+@enduml
