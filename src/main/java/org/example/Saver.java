@@ -25,6 +25,8 @@ public class Saver {
             writer.newLine();
             for (Client c : allClients) {
                 if (c.getStatus() == ClientStatus.SERVED) {
+                    totalRating += c.getSatisfactionRating();
+                    ratedCount++;
                     String dish = c.getOrder() != null ? c.getOrder().getDish().getName() : "-";
                     writer.write(
                             c.getId() + "," +
@@ -55,10 +57,6 @@ public class Saver {
                     );
                     writer.newLine();
                 }
-                if (c.getStatus() == ClientStatus.SERVED) {
-                    totalRating += c.getSatisfactionRating();
-                    ratedCount++;
-                }
             }
             writer.newLine();
             writer.write("==== Statystyki ====");
@@ -73,7 +71,7 @@ public class Saver {
 
             writer.newLine();
             System.out.println();
-            System.out.println("***Wyniki symulacji zostały zapisane do pliku.***");
+            System.out.println("**Wyniki symulacji zostały zapisane do pliku.**");
         } catch (IOException e) {
             System.err.println("Błąd zapisu wyników symulacji: " + e.getMessage());
         }

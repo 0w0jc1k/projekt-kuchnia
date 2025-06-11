@@ -6,6 +6,7 @@ package org.example;
  * Klienci moga skladac zamowienia, czekac na nie oraz wystawiac swoja ocene na podstawie
  * czasu oczekiwania na zamowione danie
  *
+ * 
  * @author Aleksandra Wojcik, Katarzyna Druciak
  * @see RegularClient
  * @see VIPClient
@@ -98,9 +99,8 @@ public abstract class Client extends Person implements ClientAction{
      */
     @Override
     public void placeOrder(Dish dish, Kitchen kitchen) { // klient składa zamówienie w kuchni
-        this.order = new Order(this,dish,1); //przykladowe zamowienie
+        this.order = new Order(this,dish,id); //przykladowe zamowienie
         kitchen.addOrder(this.order);
-        System.out.println(getId()+". [VIP] "+getName() + " zamówił/a: " + dish.getName());
     }
 
     /**
