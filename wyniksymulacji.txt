@@ -1,15 +1,12 @@
 === Obsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-2,Ryan Gosling,Bruschetta,SERVED,5,4
-5,Dakota Johnson,Bruschetta,SERVED,5,4
-7,Johnny Depp,Bruschetta,SERVED,5,4
+2,Pedro Pascal,Bruschetta,SERVED,5,4
 
 === Nieobsłużeni klienci ===
 id,name,dish,status,satisfaction,actualWaitTime
-1,Jennifer Lawrence,Sałatka Cezar,WAITING,-,7
-3,Dakota Johnson,Sushi,WAITING,-,7
-4,Cate Blanchett,Zupa pomidorowa,WAITING,-,7
-6,Timothee Chalamet,Burger,WAITING,-,7
+1,Chris Evans,Karpatka,WAITING,-,4
+3,Timothee Chalamet,Makaron Carbonara,WAITING,-,4
+4,Chris Evans,Burger,WAITING,-,4
 
 ==== Statystyki ====
 Średnia ocena obsłużonych klientów: 5,00

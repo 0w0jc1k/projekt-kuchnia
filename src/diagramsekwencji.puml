@@ -3,7 +3,8 @@ title Diagram sekwencji
 
 actor "Main" as Main
 participant "simulation:Simulation" as Simulation
-participant "vipClient (hardcodowany)" as VIPClient
+participant "vipClient:VIPClient" as VIPClient
+participant "regularClient:RegularClient" as RegularClient
 participant "kitchen:Kitchen" as Kitchen
 participant "order:Order" as Order
 participant "dish:Dish" as Dish
@@ -14,15 +15,21 @@ Main -> Simulation : new Simulation(config)
 activate Simulation
 Simulation -> Simulation : initialize()
 
+
 Simulation -> VIPClient : new VIPClient(id, name)
 activate VIPClient
 deactivate VIPClient
+
+Simulation -> RegularClient : new RegularClient(id, name)
+activate RegularClient
+deactivate RegularClient
+
 
 Simulation -> VIPClient : placeOrder(chosenDish, kitchen)
 deactivate Simulation
 
 activate VIPClient
-VIPClient -> Order : new Order(this, dish, 1)
+VIPClient -> Order : new Order(this, dish, 1, VIP=true)
 activate Order
 Order -> VIPClient : setOrder(this)
 deactivate Order
@@ -31,10 +38,40 @@ VIPClient -> Kitchen : addVipOrder(order)
 activate Kitchen
 deactivate VIPClient
 
+
+Simulation -> RegularClient : placeOrder(chosenDish, kitchen)
+activate RegularClient
+RegularClient -> Order : new Order(this, dish, 1, VIP=false)
+activate Order
+Order -> RegularClient : setOrder(this)
+deactivate Order
+
+RegularClient -> Kitchen : addRegularOrder(order)
+deactivate RegularClient
+
+
 Kitchen -> Kitchen : processOrders()
 activate Kitchen
 Kitchen -> Kitchen : findFreeCook()
-Kitchen -> Cook : assignOrder(order)
+Kitchen -> Cook : assignOrder(vipOrder)  ' Najpierw VIP
+activate Cook
+
+Kitchen -> Order : setStatus(OrderStatus.IN_PROGRESS)
+activate Order
+deactivate Order
+
+Cook -> Dish : prepare()
+activate Dish
+deactivate Dish
+
+Cook -> Order : setStatus(OrderStatus.READY)
+activate Order
+deactivate Order
+deactivate Cook
+
+
+Kitchen -> Kitchen : findFreeCook()
+Kitchen -> Cook : assignOrder(regularOrder)
 activate Cook
 
 Kitchen -> Order : setStatus(OrderStatus.IN_PROGRESS)
